@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #1e293b;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        header {
+            background: #2563eb;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #dbeafe;
+        }
+
+        .summary {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px #0000000d;
+        }
+
+        .summary h3 {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .summary h2 {
+            color: #2563eb;
+            font-size: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px #0000000d;
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            font-size: 21px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #2563eb;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 11px 18px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #1d4ed8;
+        }
+
+        .secondary {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .search-box {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        th {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .edit-btn {
+            background: #fef3c7;
+            color: #92400e;
+            margin-right: 5px;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>🎓 Student Management System</h1>
+        <p>Manage student records easily and efficiently.</p>
+    </header>
+
+    <section class="summary">
+        <h3>TOTAL STUDENTS</h3>
+        <h2 id="totalStudents">0</h2>
+    </section>
+
+    <section class="card">
+        <h2 id="formTitle">Add New Student</h2>
+
+        <form id="studentForm">
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="rollNo">Roll Number</label>
+                    <input type="text" id="rollNo"
+                           placeholder="Enter roll number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Student Name</label>
+                    <input type="text" id="name"
+                           placeholder="Enter student name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email"
+                           placeholder="Enter email address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <select id="department" required>
+                        <option value="">Select Department</option>
+                        <option value="CSE">CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EEE">EEE</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="Civil">Civil</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="year">Year of Study</label>
+                    <select id="year" required>
+                        <option value="">Select Year</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone"
+                           placeholder="Enter phone number"
+                           pattern="[0-9]{10}"
+                           maxlength="10" required>
+                </div>
+
+            </div>
+
+            <div class="buttons">
+                <button type="submit" class="primary" id="submitBtn">
+                    Add Student
+                </button>
+
+                <button type="button" class="secondary"
+                        id="cancelBtn" hidden>
+                    Cancel Edit
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>Student Records</h2>
+
+        <input
+            type="search"
+            id="searchInput"
+            class="search-box"
+            placeholder="🔍 Search by name, roll number, or department..."
+            aria-label="Search student records"
+        >
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Roll No.</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Year</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="studentTableBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer>
+        Student Management System | HTML, CSS & JavaScript
+    </footer>
+
+</div>
+
+<script>
+    const form = document.getElementById("studentForm");
+    const tableBody = document.getElementById("studentTableBody");
+    const totalStudents = document.getElementById("totalStudents");
+    const searchInput = document.getElementById("searchInput");
+    const submitBtn = document.getElementById("submitBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const formTitle = document.getElementById("formTitle");
+
+    let students = [];
+
+    // Load saved records from the browser
+    try {
+        const savedStudents = JSON.parse(
+            localStorage.getItem("studentRecords") || "[]"
+        );
+
+        if (Array.isArray(savedStudents)) {
+            students = savedStudents.filter(student =>
+                student &&
+                typeof student.id === "string" &&
+                typeof student.rollNo === "string" &&
+                typeof student.name === "string" &&
+                typeof student.email === "string" &&
+                typeof student.department === "string" &&
+                typeof student.year === "string" &&
+                typeof student.phone === "string"
+            );
+        }
+    } catch (error) {
+        students = [];
+    }
+
+    let editingId = null;
+
+    function saveStudents() {
+        try {
+            localStorage.setItem(
+                "studentRecords",
+                JSON.stringify(students)
+            );
+        } catch (error) {
+            alert("Unable to save records in this browser.");
+        }
+    }
+
+    // Render student records safely
+    function renderStudents() {
+        const query = searchInput.value.trim().toLowerCase();
+
+        const filteredStudents = students.filter(student =>
+            [
+                student.rollNo,
+                student.name,
+                student.email,
+                student.department,
+                student.year,
+                student.phone
+            ].some(value => value.toLowerCase().includes(query))
+        );
+
+        totalStudents.textContent = students.length;
+        tableBody.replaceChildren();
+
+        if (filteredStudents.length === 0) {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 7;
+            cell.className = "empty";
+            cell.textContent = students.length === 0
+                ? "No student records yet. Add your first student!"
+                : "No matching students found.";
+
+            row.appendChild(cell);
+            tableBody.appendChild(row);
+            return;
+        }
+
+        filteredStudents.forEach(student => {
+            const row = document.createElement("tr");
+
+            [
+                student.rollNo,
+                student.name,
+                student.email,
+                student.department,
+                student.year,
+                student.phone
+            ].forEach(value => {
+                const cell = document.createElement("td");
+                cell.textContent = value;
+                row.appendChild(cell);
+            });
+
+            const actionsCell = document.createElement("td");
+
+            const editButton = document.createElement("button");
+            editButton.textContent = "Edit";
+            editButton.className = "edit-btn";
+            editButton.type = "button";
+            editButton.addEventListener("click", () => editStudent(student.id));
+
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.className = "delete-btn";
+            deleteButton.type = "button";
+            deleteButton.addEventListener("click", () => deleteStudent(student.id));
+
+            actionsCell.append(editButton, deleteButton);
+            row.appendChild(actionsCell);
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Add or update a student
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const student = {
+            rollNo: document.getElementById("rollNo").value.trim(),
+            name: document.getElementById("name").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            department: document.getElementById("department").value,
+            year: document.getElementById("year").value,
+            phone: document.getElementById("phone").value.trim()
+        };
+
+        if (Object.values(student).some(value => !value)) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        if (!/^[0-9]{10}$/.test(student.phone)) {
+            alert("Please enter a valid 10-digit phone number.");
+            return;
+        }
+
+        const duplicateRoll = students.some(existing =>
+            existing.rollNo.toLowerCase() === student.rollNo.toLowerCase() &&
+            existing.id !== editingId
+        );
+
+        if (duplicateRoll) {
+            alert("This roll number already exists.");
+            return;
+        }
+
+        if (editingId !== null) {
+            students = students.map(existing =>
+                existing.id === editingId
+                    ? { ...existing, ...student }
+                    : existing
+            );
+        } else {
+            students.push({
+                id: crypto.randomUUID(),
+                ...student
+            });
+        }
+
+        saveStudents();
+        renderStudents();
+        resetForm();
+
+        alert(editingId === null
+            ? "Student added successfully!"
+            : "Student updated successfully!");
+    });
+
+    // Edit student details
+    function editStudent(id) {
+        const student = students.find(item => item.id === id);
+
+        if (!student) return;
+
+        editingId = id;
+
+        document.getElementById("rollNo").value = student.rollNo;
+        document.getElementById("name").value = student.name;
+        document.getElementById("email").value = student.email;
+        document.getElementById("department").value = student.department;
+        document.getElementById("year").value = student.year;
+        document.getElementById("phone").value = student.phone;
+
+        formTitle.textContent = "Edit Student";
+        submitBtn.textContent = "Update Student";
+        cancelBtn.hidden = false;
+
+        form.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // Delete student record
+    function deleteStudent(id) {
+        const student = students.find(item => item.id === id);
+
+        if (!student) return;
+
+        if (confirm(`Delete the record for ${student.name}?`)) {
+            students = students.filter(item => item.id !== id);
+
+            saveStudents();
+            renderStudents();
+
+            if (editingId === id) {
+                resetForm();
+            }
+        }
+    }
+
+    // Reset form after saving or cancelling
+    function resetForm() {
+        editingId = null;
+        form.reset();
+
+        formTitle.textContent = "Add New Student";
+        submitBtn.textContent = "Add Student";
+        cancelBtn.hidden = true;
+    }
+
+    cancelBtn.addEventListener("click", resetForm);
+    searchInput.addEventListener("input", renderStudents);
+
+    // Display saved records when the page opens
+    renderStudents();
+</script>
+
+</body>
+</html>
